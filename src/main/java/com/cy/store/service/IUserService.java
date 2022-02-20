@@ -10,4 +10,12 @@ public interface IUserService {
      * @param user 用户的数据对象
      */
     void regist(User user);
+
+    /**
+     * 用于用户登陆
+     * @param userName 用户名
+     * @param password 密码
+     * @return 返回登陆的用户信息
+     */
+    User loging(String userName,String password);
 }
