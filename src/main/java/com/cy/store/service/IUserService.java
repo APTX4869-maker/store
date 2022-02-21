@@ -15,7 +15,7 @@ public interface IUserService {
      * 用于用户登陆
      * @param userName 用户名
      * @param password 密码
-     * @return 返回登陆的用户信息
+     * @return 返回登陆的用户信息，如果没有返回 null
      */
-    User loging(String userName,String password);
+    User login(String userName,String password);
 }

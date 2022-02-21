@@ -3,6 +3,8 @@ package com.cy.store.service.impl;
 import com.cy.store.entity.User;
 import com.cy.store.mapper.UserMapper;
 import com.cy.store.service.IUserService;
+import com.cy.store.service.ex.PasswordNotMatchException;
+import com.cy.store.service.ex.UserNameNotFoundException;
 import com.cy.store.service.ex.insertException;
 import com.cy.store.service.ex.userNameDuplicatedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,35 @@ public class UserServiceImpl implements IUserService {
             throw new insertException("插入过程中出现异常");
         }
     }
+
+    @Override
+    public User login(String userName, String password) {
+        User user = userMapper.findUser(userName);
+        if (user == null){
+            throw new UserNameNotFoundException("用户没有查询到");
+        }
+        //再判断用户的密码是否匹配
+        //1.先获取用户数据库中的密码和盐值
+        String oldPass = user.getPassword();
+        String salt = user.getSalt();
+        //2.在用现在传入的密码来加上盐值加密 最后来比较两个密码是否相同
+        String newPass = getMd5passFun(password, salt);
+        if (!oldPass.equals(newPass)){
+            throw new PasswordNotMatchException("密码不正确");
+        }
+        //还要判断用户信息是否删除过
+        if (user.getIsDelete() == 1){
+            throw new userNameDuplicatedException("用户不存在");
+        }
+        //减小数据的传输 只传有用的
+        User res = new User();
+        res.setUserName(user.getUserName());
+        res.setAvatar(user.getAvatar());
+        res.setUid(user.getUid());
+
+        return res;
+    }
+
     //定义一个加密方法
     private String getMd5passFun(String password,String salt){
         //加密三次
