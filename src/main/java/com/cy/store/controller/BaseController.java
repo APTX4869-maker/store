@@ -1,8 +1,6 @@
 package com.cy.store.controller;
 
-import com.cy.store.service.ex.insertException;
-import com.cy.store.service.ex.serviceException;
-import com.cy.store.service.ex.userNameDuplicatedException;
+import com.cy.store.service.ex.*;
 import com.cy.store.utils.jsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,7 +18,14 @@ public class BaseController implements Serializable {
         if (e instanceof insertException){
             result.setState(5000);
             result.setMessage("插入数据异常");
-        }else if (e instanceof userNameDuplicatedException){
+        }else if (e instanceof PasswordNotMatchException){
+            result.setState(5001);
+            result.setMessage("用户密码错误异常");
+        }else if (e instanceof UserNameNotFoundException){
+            result.setState(5002);
+            result.setMessage("用户名未找到异常");
+        }
+        else if (e instanceof userNameDuplicatedException){
             result.setState(4000);
             result.setMessage("用户名已被占用");
         }

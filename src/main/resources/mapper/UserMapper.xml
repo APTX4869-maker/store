@@ -38,6 +38,6 @@
     resultMap="userEntityMap" 则是因为表字段和类字段不一致时 通过指定自定义的映射规则 来定义返回结果
     -->
     <select id="findUser" resultMap="userEntityMap">
-        SELECT username FROM t_user WHERE username = #{userName}
+        SELECT * FROM t_user WHERE username = #{userName}
     </select>
 </mapper>
