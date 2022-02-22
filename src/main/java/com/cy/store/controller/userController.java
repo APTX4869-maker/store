@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 
 @RestController //@Controller + @ResponseBody controller 表示这个类被spring接管为控制器类 responsebody表示以json格式响应到前端
 @RequestMapping("/user") //什么类型的请求能进入该controller
@@ -38,8 +40,15 @@ public class userController extends BaseController{
     }
 
     @RequestMapping("/login")
-    private jsonResult<User> login(String userName,String password){
+    private jsonResult<User> login(String userName, String password, HttpSession session){
         User data = userService.login(userName, password);
+        //向session对象中完成数据的绑定（全局的）
+        session.setAttribute("uid",data.getUid());
+        session.setAttribute("userName",data.getUserName());
+
+        //输出验证
+//        System.out.println(getUidFromSession(session));
+//        System.out.println(getUserNameFromSession(session));
         return new jsonResult<>(success,data);
     }
 }

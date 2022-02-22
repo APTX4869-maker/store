@@ -4,6 +4,7 @@ import com.cy.store.service.ex.*;
 import com.cy.store.utils.jsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
 //控制岑的基类 用于统一异常处理
@@ -30,5 +31,20 @@ public class BaseController implements Serializable {
             result.setMessage("用户名已被占用");
         }
         return result;
+    }
+
+    //只想在当前包下使用
+
+    /**
+     * 获取session对象中的uid
+     * @param session
+     * @return 当前登陆的uid的值
+     */
+    protected final Integer getUidFromSession(HttpSession session){
+        return Integer.valueOf(session.getAttribute("uid").toString());
+    }
+
+    protected final String getUserNameFromSession(HttpSession session){
+        return session.getAttribute("userName").toString();
     }
 }
