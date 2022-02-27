@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 @SpringBootTest //标注这个一个测试类 不会同项目一起打包
 @RunWith(SpringRunner.class) //最外层的测试类可以省略 里层的不能省略 表示启动单元测试类 不写不能够运行
 public class UserMapperTests {
@@ -37,5 +39,16 @@ public class UserMapperTests {
         User name = userMapper.findUser("张三");
         System.out.println(name);
     }
+
+    @Test
+    public void updatePasswordByUid(){
+        userMapper.updatePasswordByUid(6,"333","admin",new Date());
+    }
+    @Test
+    public void findByUid(){
+        User user = userMapper.findByUid(6);
+        System.out.println(user);
+    }
+
 
 }

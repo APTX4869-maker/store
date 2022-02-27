@@ -3,10 +3,7 @@ package com.cy.store.service.impl;
 import com.cy.store.entity.User;
 import com.cy.store.mapper.UserMapper;
 import com.cy.store.service.IUserService;
-import com.cy.store.service.ex.PasswordNotMatchException;
-import com.cy.store.service.ex.UserNameNotFoundException;
-import com.cy.store.service.ex.insertException;
-import com.cy.store.service.ex.userNameDuplicatedException;
+import com.cy.store.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -82,6 +79,25 @@ public class UserServiceImpl implements IUserService {
         res.setUid(user.getUid());
 
         return res;
+    }
+
+    @Override
+    public void updatePassword(Integer uid, String oldPassword, String newPassword, String userName) {
+        User user = userMapper.findByUid(uid);
+        if (user.getIsDelete() == 1 || user == null) {
+            throw new UserNameNotFoundException("用户数据不存在");
+        }
+        //原始密码和数据库中的密码比较
+        String md5passFun = getMd5passFun(oldPassword, user.getSalt());
+        if (!md5passFun.equals(user.getPassword())){
+            throw new PasswordNotMatchException("密码错误");
+        }
+        //设置新的密码
+        String newMd5Password = getMd5passFun(newPassword, user.getSalt());
+        Integer rows = userMapper.updatePasswordByUid(uid, newMd5Password, userName, new Date());
+        if (rows != 1){
+            throw new UpdateException("更新数据时产生错误");
+        }
     }
 
     //定义一个加密方法

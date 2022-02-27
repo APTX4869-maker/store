@@ -28,7 +28,7 @@ public class UserServiceTests {
     @Test //注意倒包的 import org.junit.Test;
     public void regist(){
         User user = new User();
-        user.setUserName("王武");
+        user.setUserName("tim03");
         user.setPassword("1122");
         //密码要加密 md5
 
@@ -47,6 +47,11 @@ public class UserServiceTests {
     public void login(){
         User user = userService.login("tim01", "123456");
         System.out.println(user);
+    }
+
+    @Test
+    public void updatePassword(){
+        userService.updatePassword(7,"1122","112233","admin");
     }
 
 

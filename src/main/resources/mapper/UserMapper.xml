@@ -40,4 +40,18 @@
     <select id="findUser" resultMap="userEntityMap">
         SELECT * FROM t_user WHERE username = #{userName}
     </select>
+
+
+    <select id="findByUid" resultMap="userEntityMap">
+        SELECT * FROM t_user WHERE uid = #{uid}
+    </select>
+
+    <update id="updatePasswordByUid" >
+        UPDATE t_user SET
+        password = #{password},
+        modified_user = #{modifiedUser},
+        modified_time = #{modifiedTime}
+        WHERE uid = #{uid}
+    </update>
+
 </mapper>

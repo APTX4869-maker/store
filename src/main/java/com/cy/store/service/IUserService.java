@@ -18,4 +18,13 @@ public interface IUserService {
      * @return 返回登陆的用户信息，如果没有返回 null
      */
     User login(String userName,String password);
+
+    /**
+     * 用于修改密码
+     * @param uid
+     * @param oldPassword
+     * @param newPassword
+     * @param userName
+     */
+    void updatePassword(Integer uid,String oldPassword,String newPassword,String userName);
 }
